@@ -3,7 +3,7 @@ import axios from 'axios';
 import Todo from './TodoModel';
 
 const BACKEND = 'http://localhost:3000';
-const headers = {
+const HEADERS = {
     'Content-Type': 'application/json',
 };
 
@@ -24,21 +24,21 @@ class Store {
     }
 
     createTodo(title) {
-        axios.post(BACKEND, {title}).then((response) => {
+        axios.post(BACKEND, {title}, HEADERS).then((response) => {
             const todo = response.data;
             this.todos.push(new Todo(todo.id, todo.title, todo.done));
         });
     }
 
     toggleComplete(todo) {
-        axios.patch(`${BACKEND}/${todo.id}`, {}, {'Content-Type': 'application/json'})
+        axios.patch(`${BACKEND}/${todo.id}`, {}, HEADERS)
             .then((response) => {
                 todo.done = response.data.done;
             });
     }
 
     deleteTodo(item) {
-        axios.delete(`${BACKEND}/${item.id}`, headers)
+        axios.delete(`${BACKEND}/${item.id}`, HEADERS)
             .then((response) => {
                 if (response.data) {
                     const todos = this.todos.filter(todo => todo.id !== item.id);
