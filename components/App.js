@@ -11,6 +11,10 @@ export default class App extends React.Component {
         this.filterTodos = this.filterTodos.bind(this);
     }
 
+    componentWillMount() {
+        store.loadTodos();
+    }
+
     createTodo(e) {
         if (e.which === 13) {
             store.createTodo(e.target.value, false);
@@ -28,6 +32,10 @@ export default class App extends React.Component {
                 <input onKeyPress={this.createTodo} placeholder="New todo"/>
                 <input onChange={this.filterTodos} placeholder="Filter" />
                 <TodoList store={store}/>
+                <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    store.clearCompleted();
+                }}>Clear completed</a>
             </div>
         );
     }
